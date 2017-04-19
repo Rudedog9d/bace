@@ -1,0 +1,53 @@
+<html>
+
+<script>
+    function setPasswd(){
+        var input = document.getElementById("passwd");
+        var output = document.getElementById("cmd-output");
+        var passwd = input.value;
+        console.log('Setting passwd ', passwd);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            console.log(xmlhttp);
+            var json = JSON.parse(xmlhttp.responseText);
+            console.log(json);
+//            probs need to update this
+            output.innerHTML = json['result'];
+        };
+        xmlhttp.open("GET", "/api/v1/passwd.json?password=" + passwd, true);
+        xmlhttp.send();
+    }
+    function runcmd(){
+        var input = document.getElementById("cmd-input");
+        var output = document.getElementById("cmd-output");
+        var cmd = input.value;
+        console.log('Running command ', cmd);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            console.log(xmlhttp);
+            var json = JSON.parse(xmlhttp.responseText);
+            console.log(json);
+            output.innerHTML = json['result'];
+        };
+        xmlhttp.open("GET", "/api/v1/exec.json?cmd=" + cmd, true);
+        xmlhttp.send();
+    }
+
+</script>
+
+<form action="javascript:setPasswd();">
+    <label for="passwd">Set Password</label>
+    <input id="passwd" placeholder="Password$">
+</form>
+
+<form action="javascript:runcmd();">
+    <input id="cmd-input" placeholder="cmd...">
+</form>
+
+<div id="cmd-output">
+    <!-- Where to put the result text -->
+</div>
+
+</html>
