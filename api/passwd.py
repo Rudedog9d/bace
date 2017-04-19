@@ -9,6 +9,8 @@ parser.add_argument('password')
 
 WIN_PASSWD_CMD_BASE = '''powershell -ExecutionPolicy bypass -Command "C:\Windows\passwd.ps1 -PlainTextPassword '{passwd}'"'''
 
+
+# /api/v1/passwd.json
 class PasswdResource(Resource):
     '''
     changed the password on the local machine
@@ -27,7 +29,6 @@ class PasswdResource(Resource):
         print('Recieved: {}'.format(args))
 
         try:
-            # run command immediately
             result = subprocess.check_output(WIN_PASSWD_CMD_BASE.format(passwd=passwd), timeout=5)
         except Exception as e:
             return {'error': str(e)}

@@ -2,7 +2,8 @@
 from flask import Flask, redirect, render_template
 from flask_restful import Api
 
-from api.exec import ExecuteResource
+from api.exec import ExecuteResource, ExecuteManagerResource
+from api.passwd import PasswdResource
 
 # Initialize Flask and API
 app = Flask(__name__, template_folder='templates')
@@ -14,6 +15,8 @@ import os
 
 # Add API Routes
 api.add_resource(ExecuteResource, '/exec.json')
+api.add_resource(ExecuteManagerResource, '/exec/manager.json')
+api.add_resource(PasswdResource, '/passwd.json')
 
 @app.route('/<string:page_name>/')
 def static_page(page_name):

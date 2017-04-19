@@ -1,2 +1,1 @@
-from api import exec
-from api import passwd
+from api import *

@@ -3,12 +3,24 @@ from flask_restful import reqparse, Resource
 import os
 import subprocess
 
+THREADS = {}
+INDEX = 0
 
-parser = reqparse.RequestParser()
-parser.add_argument('cmd')
-parser.add_argument('thread')
-parser.add_argument('timeout', type=int)
+exec_parser = reqparse.RequestParser()
+exec_parser.add_argument('cmd')
+exec_parser.add_argument('thread')
+exec_parser.add_argument('timeout', type=int)
 
+# /api/v1/exec/manage
+class ExecuteManagerResource(Resource):
+    def get(self):
+        args = exec_parser.parse_args()
+        thread = args.get('thread', None)
+        if not thread:
+            return {'error': '{}: thread not found'.format(thread)}
+        return THREADS[thread]
+
+# /api/v1/exec.json
 class ExecuteResource(Resource):
     def __init__(self):
         self.threads = []
@@ -21,7 +33,7 @@ class ExecuteResource(Resource):
 
     def get(self):
         result = None
-        args = parser.parse_args()
+        args = exec_parser.parse_args()
         thread = True if args['thread'] == 'True' else False
         cmd = args['cmd'].split()
         timeout = args.get('timeout', None) or 5

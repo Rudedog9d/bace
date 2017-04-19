@@ -29,7 +29,10 @@
             console.log(xmlhttp);
             var json = JSON.parse(xmlhttp.responseText);
             console.log(json);
-            output.innerHTML = json['result'];
+            if(json && json.length > 2){
+                // avoid parsing if no response
+                output.innerHTML = json['result'];
+            }
         };
         xmlhttp.open("GET", "/api/v1/exec.json?cmd=" + cmd, true);
         xmlhttp.send();
